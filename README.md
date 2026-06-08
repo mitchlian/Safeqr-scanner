@@ -1,0 +1,2 @@
+# Safeqr-scanner
+
