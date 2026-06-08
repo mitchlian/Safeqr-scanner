@@ -1,27 +1,31 @@
 // script.js file
+let htmlscanner;
 
-function domReady(fn) {
-    if (
-        document.readyState === "complete" ||
-        document.readyState === "interactive"
-    ) {
-        setTimeout(fn, 1000);
-    } else {
-        document.addEventListener("DOMContentLoaded", fn);
-    }
-}
-
-domReady(function () {
-
-    // If found your qr code
-    function onScanSuccess(decodeText, decodeResult) {
-        alert("Your QR is: " + decodeText);
-        console.log('decodeResult:', decodeResult);
-    }
-
-    let htmlscanner = new Html5QrcodeScanner(
+function startScanner() {
+    htmlscanner = new Html5QrcodeScanner(
         "my-qr-reader",
         { fps: 10, qrbox: 250 }
     );
     htmlscanner.render(onScanSuccess);
+}
+
+function onScanSuccess(decodeText, decodeResult) {
+    // Now this works because htmlscanner is globally defined
+    htmlscanner.clear().then(() => {
+        const userConfirm = confirm(`QR Code detected: ${decodeText}. Do you want to open it?`);
+
+        if (userConfirm) {
+            window.open(decodeText, '_blank');
+            
+        } 
+        startScanner();
+    }).catch((error) => {
+        console.error("Error clearing the scanner: ", error);
+        startScanner();
+    });
+}
+
+// 3. Start it once the page is ready
+document.addEventListener("DOMContentLoaded", function () {
+    startScanner();
 });
