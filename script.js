@@ -1,5 +1,6 @@
 // script.js file
 let htmlscanner;
+const functionUrl='https://zbfbpswmaylqjapqwbel.supabase.co/functions/v1/check-url';
 
 function startScanner() {
     htmlscanner = new Html5QrcodeScanner(
@@ -9,20 +10,34 @@ function startScanner() {
     htmlscanner.render(onScanSuccess);
 }
 
-function onScanSuccess(decodeText, decodeResult) {
-    // Now this works because htmlscanner is globally defined
-    htmlscanner.clear().then(() => {
-        const userConfirm = confirm(`QR Code detected: ${decodeText}. Do you want to open it?`);
+async function onScanSuccess(decodeText, decodeResult) {
+    htmlscanner.clear();
+    
+    try {
+        // Call Edge Function 
+        const response = await fetch(functionUrl, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ url: decodeText })
+        });
 
-        if (userConfirm) {
-            window.open(decodeText, '_blank');
-            
-        } 
-        startScanner();
-    }).catch((error) => {
-        console.error("Error clearing the scanner: ", error);
-        startScanner();
-    });
+        const { isSafe } = await response.json();
+
+        // Google check
+        if (isSafe) {
+            console.log("URL is safe!");
+            const userConfirm = confirm(`QR Code detected: ${decodeText}. Do you want to open it?`);
+            if (userConfirm) {
+                window.open(decodeText, '_blank');
+            }
+        } else {
+            alert("SECURITY ALERT: This link was flagged as malicious!");
+            console.warn("Blocked malicious URL:", decodeText);
+        }
+    } catch (err) {
+        console.error("Function error:", err);
+    }
+    startScanner();
 }
 
 // 3. Start it once the page is ready
