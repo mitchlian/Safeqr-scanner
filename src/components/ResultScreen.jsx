@@ -1,6 +1,7 @@
 import { useState } from "react";
 import DangerModal from "./DangerModal";
 
+
 function ResultScreen({ result, onScanAgain }) {
 
   const [isDangerModalOpen, setIsDangerModalOpen] = useState(false);

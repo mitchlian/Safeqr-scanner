@@ -18,9 +18,7 @@ function QRScanner({ onScanSuccess }) {
           onScanSuccess(decodedText);
         });
       },
-      (error) => {
-        // ignore scan errors
-      }
+      () => {}
     );
 
     return () => {
