@@ -2,7 +2,8 @@ import { useState } from "react";
 import QRScanner from "./components/QRScanner";
 import LoadingScreen from "./components/LoadingScreen";
 import ResultScreen from "./components/ResultScreen";
-import { supabase } from "../supabaseClient";
+import Card from "./components/Card";
+import { supabase } from "./supabaseClient";
 const functionUrl='https://zbfbpswmaylqjapqwbel.supabase.co/functions/v1/check-url';
 import "./App.css";
 
@@ -43,35 +44,24 @@ function App() {
     //   setScreen("result");
 
     // }, 2500);
-      try {
+    try {
       const response = await fetch(functionUrl, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ url: decodedText }),
+        body: JSON.stringify({ url: decodedText })
       });
 
       const { isSafe } = await response.json();
-
-      if (isSafe) {
-        const userConfirm = confirm(
-          `QR Code detected:\n${decodedText}\n\nOpen it?`
-        );
-
-        if (userConfirm) {
-          window.open(decodedText, "_blank");
-        }
-      } else {
-        alert("SECURITY ALERT: This link was flagged as malicious!");
-        console.warn("Blocked malicious URL:", decodedText);
-      }
 
       // still show result UI
       setScanResult({
         url: decodedText,
         safe: isSafe,
+        reasons: [],
       });
 
       setScreen("result");
+
     } catch (err) {
       console.error("Function error:", err);
 
@@ -91,22 +81,46 @@ function App() {
   };
 
   return (
-    <div className="app">
+      <div className="app">
 
-      {screen === "scanner" &&
-        <QRScanner onScanSuccess={handleScan} />
-      }
+        <div className="dashboard">
 
-      {screen === "loading" &&
-        <LoadingScreen />
-      }
+          {/* <h1>Safe QR Scanner</h1> */}
 
-      {screen === "result" &&
-        <ResultScreen
-          result={scanResult}
-          onScanAgain={scanAgain}
-        />
-      }
+          <div className="main-grid">
+
+            <Card title="Scan & Analysis" className="analysis-card">
+
+              {screen === "scanner" && (
+                <QRScanner
+                  onScanSuccess={handleScan}
+                />
+              )}
+
+              {screen === "loading" && (
+                <LoadingScreen />
+              )}
+
+              {screen === "result" && (
+                <ResultScreen
+                  result={scanResult}
+                  onScanAgain={scanAgain}
+                />
+              )}
+
+            </Card>
+
+          </div>
+
+          <div className="bottom-grid">
+
+            {/* <Card title="Recent Scans">
+              <ScanHistory history={history} />
+            </Card> */}
+
+          </div>
+
+        </div>
 
     </div>
   );

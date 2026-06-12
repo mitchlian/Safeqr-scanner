@@ -20,7 +20,7 @@ function ResultScreen({ result, onScanAgain }) {
 
   return (
 
-    <div className="card">
+    <>
 
       <div className={result.safe ? "safe" : "unsafe"}>
 
@@ -30,19 +30,18 @@ function ResultScreen({ result, onScanAgain }) {
 
       <div className="reasons">
 
-        {result.reasons.map((reason) => (
-
-          <div className="reason-row" key={reason.name}>
-
-            <span>{reason.name}</span>
-
-            <span>
-              {reason.passed ? "✓" : "✗"}
-            </span>
-
+        {result.reasons?.length > 0 ? (
+          result.reasons.map((reason) => (
+            <div className="reason-row" key={reason.name}>
+              <span>{reason.name}</span>
+              <span>{reason.passed ? "✓" : "✗"}</span>
+            </div>
+          ))
+        ) : (
+          <div className="reason-row">
+            <span>No analysis data available</span>
           </div>
-
-        ))}
+        )}
 
       </div>
 
@@ -76,7 +75,7 @@ function ResultScreen({ result, onScanAgain }) {
         }}
        />
 
-    </div>
+    </>
   );
 }
 

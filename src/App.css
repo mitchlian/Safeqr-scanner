@@ -1,32 +1,37 @@
 body {
   margin: 0;
   padding: 0;
-  height: 100vh;
+  min-height: 100vh;
   box-sizing: border-box;
-  display: flex;
-  justify-content: center;
+  /* display: flex;
+  justify-content: center; 
   align-items: center;
-  text-align: center;
+  text-align: center; */
   background: rgba(128, 0, 0, 0.66);
   font-family: Arial, sans-serif;
 }
 
-/* Main app wrapper */
 .app {
   width: 100%;
-  display: flex;
-  justify-content: center;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
 }
 
-/* Card container (your QR box) */
+.dashboard {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
 .card {
   width: 100%;
-  max-width: 500px;
-  margin: 10px;
-  background-color: #ffffff;
-  padding: 40px 30px;
+  max-width: 650px;   /* 👈 control card size */
+  margin: 0 auto;     /* center it */
+  background-color: white;
+  padding: 20px;      /* slightly smaller padding */
   border: 1.5px solid #b2b2b2;
-  border-radius: 8px;
+  border-radius: 12px;
   box-shadow: 0 20px 25px rgba(0, 0, 0, 0.25);
 }
 
@@ -34,32 +39,46 @@ body {
   color: #000000;
 }
 
-/* QR reader container (IMPORTANT for html5-qrcode) */
+.analysis-card {
+  min-height: 500px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
 #reader {
+  width: 100%;
+  max-width: 350px;
+  margin: 0 auto;
   padding: 20px;
   border: 1.5px solid #b2b2b2;
   border-radius: 8px;
+  overflow: hidden; 
 }
 
-/* Hide info icon from library */
 #reader img[alt="Info icon"] {
   display: none;
 }
 
-/* Camera icon styling */
 #reader img[alt="Camera based scan"] {
   width: 100px !important;
   height: 100px !important;
 }
 
-/* Video styling (camera feed) */
 video {
   width: 100% !important;
+
+  max-width: 300px !important;
+
+  margin: 0 auto;
+
+  display: block;
+
   border: 1px solid #b2b2b2 !important;
   border-radius: 8px;
 }
 
-/* Buttons (for your ResultScreen / Scan Again etc.) */
 button {
   padding: 10px 20px;
   border: 1px solid #b2b2b2;
@@ -175,4 +194,38 @@ button:hover {
 
     flex:1;
     background:#dc2626;
+}
+
+.manual-input {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.manual-input input {
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+
+.manual-input button {
+  padding: 10px;
+}
+
+@media (max-width: 768px) {
+
+  .app {
+    padding: 10px;
+  }
+
+  .card {
+    padding: 20px;
+  }
+
+  .safe,
+  .unsafe {
+    font-size: 24px;
+  }
 }
