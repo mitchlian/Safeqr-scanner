@@ -196,6 +196,7 @@ button:hover {
     background:#dc2626;
 }
 
+/* Manual URL Input */
 .manual-input {
   margin-top: 20px;
   display: flex;
@@ -228,4 +229,17 @@ button:hover {
   .unsafe {
     font-size: 24px;
   }
+}
+
+.malicious-sites {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.site-row {
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+  font-size: 14px;
+  word-break: break-word;
 }

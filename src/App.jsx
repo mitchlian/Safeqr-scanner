@@ -2,6 +2,7 @@ import { useState } from "react";
 import QRScanner from "./components/QRScanner";
 import LoadingScreen from "./components/LoadingScreen";
 import ResultScreen from "./components/ResultScreen";
+import KnownMaliciousSites from "./components/KnownMaliciousSites";
 import Card from "./components/Card";
 import { supabase } from "./supabaseClient";
 const functionUrl='https://zbfbpswmaylqjapqwbel.supabase.co/functions/v1/check-url';
@@ -114,9 +115,9 @@ function App() {
 
           <div className="bottom-grid">
 
-            {/* <Card title="Recent Scans">
-              <ScanHistory history={history} />
-            </Card> */}
+            <Card title="Known Malicious Sites">
+              <KnownMaliciousSites />
+            </Card>
 
           </div>
 
