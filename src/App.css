@@ -231,6 +231,7 @@ button:hover {
   }
 }
 
+/* Malicious Sites List */
 .malicious-sites {
   display: flex;
   flex-direction: column;
@@ -242,4 +243,54 @@ button:hover {
   border-bottom: 1px solid #ddd;
   font-size: 14px;
   word-break: break-word;
+}
+
+/* Report Modal */
+.reported-url {
+
+    background: #f3f4f6;
+
+    padding: 12px;
+
+    border-radius: 8px;
+
+    margin-bottom: 20px;
+
+    word-break: break-all;
+}
+
+.report-textarea {
+
+    width: 100%;
+
+    min-height: 120px;
+
+    padding: 15px;
+
+    border: 1px solid #ccc;
+
+    border-radius: 8px;
+
+    resize: vertical;
+
+    box-sizing: border-box;
+
+    margin-bottom: 20px;
+}
+
+.cancel-btn:hover {
+    background-color: rgb(255, 0, 0);
+}
+
+.form-error {
+
+    color: #dc2626;
+
+    font-size: 14px;
+
+    margin-top: -10px;
+
+    margin-bottom: 20px;
+
+    text-align: left;
 }

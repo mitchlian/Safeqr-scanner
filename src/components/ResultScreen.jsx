@@ -1,10 +1,11 @@
 import { useState } from "react";
 import DangerModal from "./DangerModal";
-
+import ReportModal from "./ReportModal";
 
 function ResultScreen({ result, onScanAgain }) {
 
   const [isDangerModalOpen, setIsDangerModalOpen] = useState(false);
+  const [showReportModal, setShowReportModal] = useState(false);
 
   const handleOpen = () => {
 
@@ -51,7 +52,7 @@ function ResultScreen({ result, onScanAgain }) {
           Open Link
         </button>
 
-        <button>
+        <button onClick={() => setShowReportModal(true)}>
           Report Link
         </button>
 
@@ -73,7 +74,16 @@ function ResultScreen({ result, onScanAgain }) {
             setIsDangerModalOpen(false);
 
         }}
-       />
+      />
+      <ReportModal
+
+        isOpen={showReportModal}
+
+        url={result.url}
+
+        onClose={() => setShowReportModal(false)}
+
+      />
 
     </>
   );
