@@ -1,18 +1,20 @@
-import { useSearchParams, Navigate } from "react-router-dom";
+import { useParams, Navigate } from "react-router-dom";
 
 function AdminPage() {
-  const {token} = useParams();
+    const {token} = useParams();
 
-  if (token !== "FYP2026Admin") {
-    return <Navigate to="/" replace />;
-  }
+    const validToken = "FYP2026Admin";
 
-  return (
-    <>
-      <h1>Admin Dashboard</h1>
-      <p>Only accessible with the correct token.</p>
-    </>
-  );
-}
+    if (token !== validToken) {
+        return <Navigate to="/" replace />;
+    }
+
+    return (
+        <>
+        <h1>Admin Dashboard</h1>
+        <p>Only accessible with the correct token.</p>
+        </>
+    );
+    }
 
 export default AdminPage;

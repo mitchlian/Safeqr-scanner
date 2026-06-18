@@ -1,0 +1,18 @@
+.header {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  z-index: 1000;
+}
+
+.header-logo {
+  width: 150px;
+  height: auto;
+}
+
+@media (max-width: 768px) {
+  .header {
+    position: static;  
+    margin: 10px 0 20px 16px;
+  }
+}
