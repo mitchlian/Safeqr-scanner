@@ -19,32 +19,6 @@ function App() {
 
     setScreen("loading");
 
-    // // Simulate backend delay
-    // setTimeout(() => {
-
-    //   const result = {
-    //     url: decodedText,
-    //     safe: false,
-    //     reasons: [
-    //       {
-    //         name: "Google Safe Browsing API",
-    //         passed: false
-    //       },
-    //       {
-    //         name: "Known Phishing Database",
-    //         passed: true
-    //       },
-    //       {
-    //         name: "URL Pattern Validation",
-    //         passed: false
-    //       }
-    //     ]
-    //   };
-
-    //   setScanResult(result);
-    //   setScreen("result");
-
-    // }, 2500);
     try {
       const response = await fetch(functionUrl, {
         method: "POST",
