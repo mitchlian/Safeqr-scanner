@@ -20,8 +20,7 @@ function Blacklist() {
                     className="admin-row"
                     key={index}
                 >
-
-                    {url}
+                    <strong>{url}</strong>
 
                 </div>
 

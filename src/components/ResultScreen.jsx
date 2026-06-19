@@ -29,6 +29,11 @@ function ResultScreen({ result, onScanAgain }) {
 
       </div>
 
+      <div className="scanned-url">
+        <strong>Scanned URL:</strong>
+        <p>{result.url}</p>
+      </div>
+
       <div className="reasons">
 
         {result.reasons?.length > 0 ? (
