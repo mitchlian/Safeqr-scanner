@@ -1,6 +1,6 @@
-function ReportedUrlsList({ reports, onViewDetails }) {
+function ReportedUrlsList({ onViewDetails }) {
   
-     reports = [
+     const reports = [
 
         {
             id: 1,

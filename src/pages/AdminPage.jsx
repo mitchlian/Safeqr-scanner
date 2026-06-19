@@ -4,6 +4,7 @@ import AdminSidebar from "../components/AdminSidebar";
 import ScanLogs from "../components/ScanLogs";
 import Blacklist from "../components/Blacklist";
 import ReportedUrlsList from "../components/ReportedUrlsList";
+import ReportDetailsModal from "../components/ReportDetailsModal";
 import "../css/AdminPage.css";
 
 function AdminPage() {
@@ -13,6 +14,8 @@ function AdminPage() {
     const validToken = "FYP2026Admin";
 
     const [selectedTab, setSelectedTab] = useState("logs");
+
+    const [selectedReport, setSelectedReport] = useState(null);
 
     if (token !== validToken) {
         return <Navigate to="/" replace />;
@@ -32,9 +35,18 @@ function AdminPage() {
 
                 {selectedTab === "blacklist" && <Blacklist />}
 
-                {selectedTab === "reports" && <ReportedUrlsList />}
+                {selectedTab === "reports" && (
+                    <ReportedUrlsList
+                        onViewDetails={setSelectedReport}
+                    />
+                )}
 
             </div>
+
+            <ReportDetailsModal
+                report={selectedReport}
+                onClose={() => setSelectedReport(null)}
+            />
 
         </div>
     );
