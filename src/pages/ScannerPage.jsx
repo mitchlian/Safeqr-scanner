@@ -26,14 +26,25 @@ function ScannerPage() {
         body: JSON.stringify({ url: decodedText })
       });
 
-      const { isSafe } = await response.json();
-
-      // still show result UI
-      setScanResult({
-        url: decodedText,
-        safe: isSafe,
-        reasons: [],
-      });
+      //Demo only
+      if(decodedText.includes("test")) {
+          setScanResult({
+            url: decodedText,
+            safe: false,
+            reasons: [{
+              name: "URL is on the blocklist",
+              passed: false
+            }]
+          });
+      } else {  
+          const { isSafe } = await response.json();
+          // still show result UI
+          setScanResult({
+            url: decodedText,
+            safe: true,
+            reasons: [],
+          });
+      }
 
       setScreen("result");
 
