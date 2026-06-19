@@ -6,7 +6,7 @@ import KnownMaliciousSites from "../components/KnownMaliciousSites";
 import Card from "../components/Card";
 import { supabase } from "../supabaseClient";
 const functionUrl='https://zbfbpswmaylqjapqwbel.supabase.co/functions/v1/check-url';
-import "../ScannerPage.css";
+import "../css/ScannerPage.css";
 
 function ScannerPage() {
 

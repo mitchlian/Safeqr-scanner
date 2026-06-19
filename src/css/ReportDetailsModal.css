@@ -1,0 +1,163 @@
+.admin-modal-overlay {
+
+    position: fixed;
+    inset: 0;
+
+    background: rgba(0, 0, 0, 0.55);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    z-index: 2000;
+}
+
+.admin-modal {
+
+    width: 90%;
+    max-width: 550px;
+
+    background: white;
+
+    padding: 30px;
+
+    border-radius: 20px;
+
+    animation: adminPopIn .3s ease;
+
+    box-shadow: 0 20px 25px rgba(0,0,0,.25);
+}
+
+@keyframes adminPopIn {
+
+    from {
+        transform: scale(.9);
+        opacity: 0;
+    }
+
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.admin-modal h2 {
+
+    margin-top: 0;
+    margin-bottom: 25px;
+}
+
+.admin-reported-url {
+
+    background: #f3f4f6;
+
+    padding: 15px;
+
+    border-radius: 10px;
+
+    margin-bottom: 20px;
+
+    word-break: break-all;
+
+    font-size: 14px;
+}
+
+.admin-report-section {
+
+    margin-bottom: 20px;
+}
+
+.admin-report-section p {
+
+    margin-top: 8px;
+
+    line-height: 1.5;
+}
+
+.admin-modal-buttons {
+
+    display: flex;
+
+    gap: 15px;
+
+    margin-top: 30px;
+}
+
+.admin-decline-btn {
+
+    flex: 1;
+
+    background: #6b7280;
+}
+
+.admin-decline-btn:hover {
+
+    background: #b91c1c;
+}
+
+.admin-accept-btn {
+
+    flex: 1;
+
+    background: #16a34a;
+}
+
+.admin-accept-btn:hover {
+
+    background: #15803d;
+}
+
+@media (max-width: 768px) {
+
+    .admin-modal {
+
+        padding: 20px;
+    }
+
+    .admin-modal-buttons {
+
+        flex-direction: column;
+    }
+}
+
+.admin-modal-title-row {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    margin-bottom: 25px;
+}
+
+.admin-modal-title-row h2 {
+
+    margin: 0;
+}
+
+.admin-close-btn {
+
+    background: transparent;
+
+    border: none;
+
+    color: #6b7280;
+
+    font-size: 24px;
+
+    cursor: pointer;
+
+    padding: 0;
+
+    margin: 0;
+
+    transition: .2s color;
+}
+
+.admin-close-btn:hover {
+
+    background: transparent;
+
+    color: #dc2626;
+}

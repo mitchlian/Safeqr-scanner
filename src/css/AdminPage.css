@@ -1,0 +1,21 @@
+.report-row {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    padding: 15px 0;
+
+    border-bottom: 1px solid #ddd;
+}
+
+.reported-list {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 10px;
+}
