@@ -197,9 +197,19 @@ button:hover {
     background:#6b7280;
 }
 
+.cancel-btn:hover{
+
+    background:#6b7280;
+}
+
 .danger-btn{
 
     flex:1;
+    background:#dc2626;
+}
+
+.danger-btn:hover{
+
     background:#dc2626;
 }
 
@@ -296,10 +306,6 @@ button:hover {
     box-sizing: border-box;
 
     margin-bottom: 20px;
-}
-
-.cancel-btn:hover {
-    background-color: rgb(255, 0, 0);
 }
 
 .form-error {

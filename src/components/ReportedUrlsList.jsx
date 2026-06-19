@@ -1,7 +1,35 @@
 function ReportedUrlsList({ reports, onViewDetails }) {
+  
+     reports = [
+
+        {
+            id: 1,
+            url: "https://fake-bank-login.com",
+            reason: "Website impersonates a banking portal.",
+            date: "19 Jun 2026"
+        },
+
+        {
+            id: 2,
+            url: "https://free-iphone-prize.com",
+            reason: "Suspicious giveaway scam.",
+            date: "18 Jun 2026"
+        },
+
+        {
+            id: 3,
+            url: "https://paypal-security-check.com",
+            reason: "Possible phishing website.",
+            date: "17 Jun 2026"
+        }
+
+    ];
 
   return (
+
     <div className="reported-list">
+
+        <h1>Reported URLs</h1>
 
       {reports.map(report => (
 

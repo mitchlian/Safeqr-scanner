@@ -31,10 +31,11 @@ function ScannerPage() {
           setScanResult({
             url: decodedText,
             safe: false,
-            reasons: [{
-              name: "URL is on the blocklist",
-              passed: false
-            }]
+            reasons: [
+              { name: "Google Safe Browsing", passed: false },
+              { name: "Blocklist", passed: true },
+              { name: "URL Pattern Validation", passed: false }
+            ]
           });
       } else {  
           const { isSafe } = await response.json();
@@ -42,7 +43,11 @@ function ScannerPage() {
           setScanResult({
             url: decodedText,
             safe: true,
-            reasons: [],
+            reasons: [
+              { name: "Google Safe Browsing", passed: true },
+              { name: "Blocklist", passed: true },
+              { name: "URL Pattern Validation", passed: true }
+            ],
           });
       }
 

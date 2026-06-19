@@ -1,51 +1,43 @@
 import { useState } from "react";
-import Card from "../components/Card";
+import { useParams, Navigate } from "react-router-dom";
+import AdminSidebar from "../components/AdminSidebar";
+import ScanLogs from "../components/ScanLogs";
+import Blacklist from "../components/Blacklist";
 import ReportedUrlsList from "../components/ReportedUrlsList";
-import ReportDetailsModal from "../components/ReportDetailsModal";
 import "../css/AdminPage.css";
 
 function AdminPage() {
 
-  const reports = [
-    {
-      id: 1,
-      url: "https://fake-bank-login.com",
-      reason: "Looks like a phishing website.",
-      date: "19 Jun 2026"
-    },
-    {
-      id: 2,
-      url: "https://free-iphone-prize.com",
-      reason: "Suspicious giveaway scam.",
-      date: "18 Jun 2026"
+    const { token } = useParams();
+
+    const validToken = "FYP2026Admin";
+
+    const [selectedTab, setSelectedTab] = useState("logs");
+
+    if (token !== validToken) {
+        return <Navigate to="/" replace />;
     }
-  ];
 
-  const [selectedReport, setSelectedReport] = useState(null);
+    return (
+        <div className="admin-layout">
 
-  return (
-    <div className="app">
+            <AdminSidebar
+                selectedTab={selectedTab}
+                setSelectedTab={setSelectedTab}
+            />
 
-      <div className="dashboard">
+            <div className="admin-content">
 
-        <Card title="User Reports">
+                {selectedTab === "logs" && <ScanLogs />}
 
-          <ReportedUrlsList
-            reports={reports}
-            onViewDetails={setSelectedReport}
-          />
+                {selectedTab === "blacklist" && <Blacklist />}
 
-        </Card>
+                {selectedTab === "reports" && <ReportedUrlsList />}
 
-      </div>
+            </div>
 
-      <ReportDetailsModal
-        report={selectedReport}
-        onClose={() => setSelectedReport(null)}
-      />
-
-    </div>
-  );
+        </div>
+    );
 }
 
 export default AdminPage;
