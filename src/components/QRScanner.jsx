@@ -6,6 +6,14 @@ function QRScanner({ onScanSuccess }) {
   const [inputUrl, setInputUrl] = useState("");
 
   useEffect(() => {
+
+    // Remove any previous scanner UI
+    const readerElement = document.getElementById("reader");
+
+    if (readerElement) {
+      readerElement.innerHTML = "";
+    }
+    
     const scanner = new Html5QrcodeScanner(
       "reader",
       {
