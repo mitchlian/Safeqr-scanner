@@ -3,9 +3,9 @@ import { ClipLoader } from "react-spinners";
 function LoadingScreen() {
 
   return (
-    <div className="card loading">
+    <>
 
-      <ClipLoader size={80} />
+      <ClipLoader size={80} color="#22d3ee" />
 
       <h2>Analyzing URL...</h2>
 
@@ -13,7 +13,7 @@ function LoadingScreen() {
       <p>Checking blacklist database</p>
       <p>Checking URL structure</p>
 
-    </div>
+    </>
   );
 }
 

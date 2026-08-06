@@ -1,4 +1,4 @@
-function DangerModal({ isOpen, onCancel, onProceed }) {
+function DangerModal({ isOpen, reasons, onClose }) {
 
   if (!isOpen)
     return null;
@@ -9,30 +9,33 @@ function DangerModal({ isOpen, onCancel, onProceed }) {
 
       <div className="modal">
 
-        <h2>⚠ Dangerous Link Detected</h2>
+        <h2 className="danger-modal-title">⚠ Dangerous Link Blocked</h2>
 
         <p>
-          This URL has been flagged as potentially malicious.
+          This link has not been opened because it was flagged as dangerous:
         </p>
 
-        <p>
-          Proceed at your own risk.
-        </p>
+        <div className="danger-reasons">
+          {reasons?.length > 0 ? (
+            reasons.map((reason) => (
+              <div className="danger-reason-row" key={reason}>
+                {reason}
+              </div>
+            ))
+          ) : (
+            <div className="danger-reason-row">
+              This URL matched one or more threat indicators.
+            </div>
+          )}
+        </div>
 
         <div className="modal-buttons">
 
           <button
             className="cancel-btn"
-            onClick={onCancel}
+            onClick={onClose}
           >
-            Cancel
-          </button>
-
-          <button
-            className="danger-btn"
-            onClick={onProceed}
-          >
-            Proceed Anyway
+            Close
           </button>
 
         </div>

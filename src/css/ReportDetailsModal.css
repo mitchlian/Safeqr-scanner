@@ -1,0 +1,176 @@
+.admin-modal-overlay {
+
+    position: fixed;
+    inset: 0;
+
+    background: rgba(0, 0, 0, 0.65);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    z-index: 2000;
+}
+
+.admin-modal {
+
+    width: 90%;
+    max-width: 550px;
+
+    background: var(--bg-panel);
+    border: 1px solid var(--border);
+
+    padding: 30px;
+
+    border-radius: 16px;
+
+    animation: adminPopIn .2s ease;
+
+    box-shadow: var(--shadow);
+}
+
+@keyframes adminPopIn {
+
+    from {
+        transform: scale(.95);
+        opacity: 0;
+    }
+
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.admin-modal h2 {
+
+    margin-top: 0;
+    margin-bottom: 25px;
+}
+
+.admin-reported-url {
+
+    background: var(--bg-inset);
+    border: 1px solid var(--border);
+
+    padding: 15px;
+
+    border-radius: 10px;
+
+    margin-bottom: 20px;
+
+    word-break: break-all;
+
+    font-family: var(--mono);
+    font-size: 13px;
+    text-align: left;
+}
+
+.admin-report-section {
+
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.admin-report-section p {
+
+    margin-top: 8px;
+
+    line-height: 1.5;
+    color: var(--text);
+}
+
+.admin-modal-buttons {
+
+    display: flex;
+
+    gap: 12px;
+
+    margin-top: 30px;
+}
+
+.admin-decline-btn {
+
+    flex: 1;
+
+    background: var(--malicious-bg);
+    border-color: var(--malicious);
+    color: var(--malicious);
+}
+
+.admin-decline-btn:hover {
+
+    background: var(--malicious);
+    color: #fff;
+}
+
+.admin-accept-btn {
+
+    flex: 1;
+
+    background: var(--safe-bg);
+    border-color: var(--safe);
+    color: var(--safe);
+}
+
+.admin-accept-btn:hover {
+
+    background: var(--safe);
+    color: #05070d;
+}
+
+@media (max-width: 768px) {
+
+    .admin-modal {
+
+        padding: 20px;
+    }
+
+    .admin-modal-buttons {
+
+        flex-direction: column;
+    }
+}
+
+.admin-modal-title-row {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    margin-bottom: 25px;
+}
+
+.admin-modal-title-row h2 {
+
+    margin: 0;
+}
+
+.admin-close-btn {
+
+    background: transparent;
+
+    border: none;
+
+    color: var(--text-muted);
+
+    font-size: 24px;
+
+    cursor: pointer;
+
+    padding: 0;
+
+    margin: 0;
+
+    transition: .2s color;
+}
+
+.admin-close-btn:hover {
+
+    background: transparent;
+    border: none;
+
+    color: var(--malicious);
+}
