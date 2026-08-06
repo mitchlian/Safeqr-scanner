@@ -4,9 +4,7 @@ import LoadingScreen from "../components/LoadingScreen";
 import ResultScreen from "../components/ResultScreen";
 import KnownMaliciousSites from "../components/KnownMaliciousSites";
 import Card from "../components/Card";
-import { supabase } from "../supabaseClient";
 const functionUrl='https://zbfbpswmaylqjapqwbel.supabase.co/functions/v1/check-url';
-import "../css/ScannerPage.css";
 
 function ScannerPage() {
 
@@ -26,30 +24,22 @@ function ScannerPage() {
         body: JSON.stringify({ url: decodedText })
       });
 
-      //Demo only
-      if(decodedText.includes("test")) {
-          setScanResult({
-            url: decodedText,
-            safe: false,
-            reasons: [
-              { name: "Google Safe Browsing", passed: false },
-              { name: "Blocklist", passed: true },
-              { name: "URL Pattern Validation", passed: false }
-            ]
-          });
-      } else {  
-          const { isSafe } = await response.json();
-          // still show result UI
-          setScanResult({
-            url: decodedText,
-            safe: true,
-            reasons: [
-              { name: "Google Safe Browsing", passed: true },
-              { name: "Blocklist", passed: true },
-              { name: "URL Pattern Validation", passed: true }
-            ],
-          });
+      if (!response.ok) {
+        throw new Error(`check-url returned ${response.status}`);
       }
+
+      const { isSafe, checks, dangerReasons } = await response.json();
+
+      setScanResult({
+        url: decodedText,
+        safe: isSafe,
+        dangerReasons,
+        reasons: [
+          { name: "Blacklist", passed: !checks.blacklist.malicious },
+          { name: "Google Safe Browsing", passed: checks.googleSafeBrowsing.checked ? !checks.googleSafeBrowsing.malicious : null },
+          { name: "VirusTotal", passed: checks.virusTotal.checked ? !checks.virusTotal.malicious : null },
+        ],
+      });
 
       setScreen("result");
 

@@ -3,16 +3,44 @@
   top: 20px;
   left: 20px;
   z-index: 1000;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 16px 8px 8px;
+  background: var(--bg-panel);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  box-shadow: var(--shadow);
+}
+
+.header-link {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
 }
 
 .header-logo {
-  width: 150px;
-  height: auto;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+}
+
+.header-wordmark {
+  font-family: var(--mono);
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  color: var(--text-heading);
+}
+
+.header-wordmark span {
+  color: var(--accent);
 }
 
 @media (max-width: 768px) {
   .header {
-    position: static;  
-    margin: 10px 0 20px 16px;
+    position: static;
+    margin: 16px 0 0 16px;
+    width: fit-content;
   }
 }

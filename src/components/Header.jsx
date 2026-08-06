@@ -5,13 +5,14 @@ import "../css/Header.css";
 function Header() {
   return (
     <div className="header">
-      <Link to="/">
+      <Link to="/" className="header-link">
         <img
           src={logo}
           alt="SafeQR"
           className="header-logo"
         />
       </Link>
+      <span className="header-wordmark">SAFE<span>QR</span></span>
     </div>
   );
 }

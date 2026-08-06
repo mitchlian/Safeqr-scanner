@@ -1,9 +1,24 @@
+import { useState } from "react";
+import { supabase } from "../supabaseClient";
 import "../css/ReportDetailsModal.css";
 
-function ReportDetailsModal({ report, onClose }) {
+function ReportDetailsModal({ report, onClose, onResolved }) {
+
+    const [updating, setUpdating] = useState(false);
 
     if (!report)
         return null;
+
+    const updateStatus = async (status) => {
+
+        setUpdating(true);
+
+        await supabase.from("reports").update({ status }).eq("id", report.id);
+
+        setUpdating(false);
+        onResolved?.();
+        onClose();
+    };
 
     return (
 
@@ -34,21 +49,28 @@ function ReportDetailsModal({ report, onClose }) {
 
                 <div className="admin-report-section">
                     <strong>Date Submitted:</strong>
-                    <p>{report.date}</p>
+                    <p>{new Date(report.created_at).toLocaleString()}</p>
+                </div>
+
+                <div className="admin-report-section">
+                    <strong>Status:</strong>
+                    <p>{report.status}</p>
                 </div>
 
                 <div className="admin-modal-buttons">
 
                     <button
                         className="admin-decline-btn"
-                        onClick={onClose}
+                        onClick={() => updateStatus("declined")}
+                        disabled={updating}
                     >
                         Decline Report
                     </button>
 
                     <button
                         className="admin-accept-btn"
-                        onClick={onClose}
+                        onClick={() => updateStatus("accepted")}
+                        disabled={updating}
                     >
                         Accept Report
                     </button>

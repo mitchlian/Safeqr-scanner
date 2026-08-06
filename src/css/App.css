@@ -1,0 +1,272 @@
+body {
+  font-family: var(--sans);
+  overflow-x: hidden;
+}
+
+.app {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 100px 20px 40px;
+}
+
+.dashboard {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.card {
+  width: 100%;
+  max-width: 650px;
+  margin: 0 auto;
+  background-color: var(--bg-panel);
+  padding: 24px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+.analysis-card {
+  min-height: 500px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+#reader {
+  width: 100%;
+  max-width: 350px;
+  margin: 0 auto;
+  padding: 20px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+  background: var(--bg-inset);
+}
+
+#reader img[alt="Info icon"] {
+  display: none;
+}
+
+#reader img[alt="Camera based scan"] {
+  width: 100px !important;
+  height: 100px !important;
+}
+
+video {
+  width: 100% !important;
+  max-width: 300px !important;
+  margin: 0 auto;
+  display: block;
+  border: 1px solid var(--border) !important;
+  border-radius: 8px;
+}
+
+.loading {
+  text-align: center;
+}
+
+.safe {
+  color: var(--safe);
+  font-family: var(--mono);
+  font-size: 24px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.unsafe {
+  color: var(--malicious);
+  font-family: var(--mono);
+  font-size: 24px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.danger-modal-title {
+  color: var(--malicious);
+}
+
+.danger-reasons {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  text-align: left;
+  margin: 16px 0;
+}
+
+.danger-reason-row {
+  background: var(--malicious-bg);
+  border: 1px solid rgba(208, 59, 59, 0.35);
+  color: var(--text-heading);
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+.danger-reasons-inline {
+  margin-top: 20px;
+  margin-bottom: 0;
+}
+
+.reason-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 15px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.buttons {
+  margin-top: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.65);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal {
+  width: 90%;
+  max-width: 450px;
+  background: var(--bg-panel);
+  border: 1px solid var(--border);
+  padding: 30px;
+  border-radius: 16px;
+  text-align: center;
+  animation: popIn 0.2s ease;
+}
+
+@keyframes popIn {
+  from {
+    transform: scale(0.95);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.modal-buttons {
+  display: flex;
+  gap: 12px;
+  margin-top: 25px;
+}
+
+.cancel-btn {
+  flex: 1;
+}
+
+.danger-btn {
+  flex: 1;
+  background: var(--malicious-bg);
+  border-color: var(--malicious);
+  color: var(--malicious);
+}
+
+.danger-btn:hover {
+  background: var(--malicious);
+  color: #fff;
+}
+
+/* Manual URL Input */
+.manual-input {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.manual-input input {
+  width: 100%;
+}
+
+/* Malicious Sites List */
+.malicious-sites {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  text-align: left;
+}
+
+.site-row {
+  padding: 10px 4px;
+  border-bottom: 1px solid var(--border);
+  font-family: var(--mono);
+  font-size: 13px;
+  word-break: break-word;
+  color: var(--text);
+}
+
+/* Report Modal */
+.reported-url {
+  background: var(--bg-inset);
+  border: 1px solid var(--border);
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  word-break: break-all;
+  font-family: var(--mono);
+  font-size: 13px;
+  text-align: left;
+}
+
+.report-textarea {
+  width: 100%;
+  min-height: 120px;
+  resize: vertical;
+  margin-bottom: 20px;
+}
+
+.form-error {
+  color: var(--malicious);
+  font-size: 13px;
+  margin-top: -10px;
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+.scanned-url {
+  background: var(--bg-inset);
+  border: 1px solid var(--border);
+  padding: 15px;
+  border-radius: 10px;
+  margin-top: 20px;
+  margin-bottom: 25px;
+  word-break: break-all;
+  text-align: left;
+}
+
+.scanned-url p {
+  margin-top: 8px;
+  font-family: var(--mono);
+  font-size: 13px;
+  color: var(--text);
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .app {
+    padding: 90px 16px 30px;
+  }
+
+  .card {
+    max-width: 100%;
+    width: 100%;
+    margin: 0;
+  }
+
+  .safe,
+  .unsafe {
+    font-size: 20px;
+  }
+}

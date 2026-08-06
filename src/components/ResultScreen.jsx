@@ -25,7 +25,7 @@ function ResultScreen({ result, onScanAgain }) {
 
       <div className={result.safe ? "safe" : "unsafe"}>
 
-        {result.safe ? "✓ SAFE LINK" : "✗ MALICIOUS LINK"}
+        {result.safe ? "✓ SAFE LINK" : "✗ DANGEROUS LINK"}
 
       </div>
 
@@ -34,13 +34,23 @@ function ResultScreen({ result, onScanAgain }) {
         <p>{result.url}</p>
       </div>
 
+      {!result.safe && result.dangerReasons?.length > 0 && (
+        <div className="danger-reasons danger-reasons-inline">
+          {result.dangerReasons.map((reason) => (
+            <div className="danger-reason-row" key={reason}>
+              {reason}
+            </div>
+          ))}
+        </div>
+      )}
+
       <div className="reasons">
 
         {result.reasons?.length > 0 ? (
           result.reasons.map((reason) => (
             <div className="reason-row" key={reason.name}>
               <span>{reason.name}</span>
-              <span>{reason.passed ? "✓" : "✗"}</span>
+              <span>{reason.passed === null ? "—" : reason.passed ? "✓" : "✗"}</span>
             </div>
           ))
         ) : (
@@ -54,7 +64,7 @@ function ResultScreen({ result, onScanAgain }) {
       <div className="buttons">
 
         <button onClick={handleOpen}>
-          Open Link
+          {result.safe ? "Open Link" : "Why is this dangerous?"}
         </button>
 
         <button onClick={() => setShowReportModal(true)}>
@@ -70,15 +80,9 @@ function ResultScreen({ result, onScanAgain }) {
 
         isOpen={isDangerModalOpen}
 
-        onCancel={() => setIsDangerModalOpen(false)}
+        reasons={result.dangerReasons}
 
-        onProceed={() => {
-
-            window.open(result.url, "_blank");
-
-            setIsDangerModalOpen(false);
-
-        }}
+        onClose={() => setIsDangerModalOpen(false)}
       />
       <ReportModal
 

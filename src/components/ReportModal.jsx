@@ -1,18 +1,17 @@
 import { useState } from "react";
+import { supabase } from "../supabaseClient";
 
 function ReportModal({ isOpen, url, onClose }) {
 
     const [reason, setReason] = useState("");
     const [submitted, setSubmitted] = useState(false);
+    const [submitting, setSubmitting] = useState(false);
     const [error, setError] = useState("");
 
     if (!isOpen)
         return null;
 
-    const handleSubmit = () => {
-
-        // later:
-        // insert into database
+    const handleSubmit = async () => {
 
         if (!reason.trim()) {
             setError("Please provide a reason before submitting.");
@@ -20,11 +19,19 @@ function ReportModal({ isOpen, url, onClose }) {
         }
 
         setError("");
+        setSubmitting(true);
 
-        console.log({
-            reportedUrl: url,
-            reason
-        });
+        const { error: insertError } = await supabase.from("reports").insert([{
+            url,
+            reason: reason.trim(),
+        }]);
+
+        setSubmitting(false);
+
+        if (insertError) {
+            setError(insertError.message);
+            return;
+        }
 
         setSubmitted(true);
     };
@@ -83,8 +90,9 @@ function ReportModal({ isOpen, url, onClose }) {
 
                             <button
                                 onClick={handleSubmit}
+                                disabled={submitting}
                             >
-                                Submit Report
+                                {submitting ? "Submitting..." : "Submit Report"}
                             </button>
 
                         </div>

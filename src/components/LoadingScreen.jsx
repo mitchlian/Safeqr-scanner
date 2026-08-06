@@ -5,7 +5,7 @@ function LoadingScreen() {
   return (
     <>
 
-      <ClipLoader size={80} />
+      <ClipLoader size={80} color="#22d3ee" />
 
       <h2>Analyzing URL...</h2>
 
