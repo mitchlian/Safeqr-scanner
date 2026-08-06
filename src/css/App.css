@@ -83,6 +83,21 @@ video {
   letter-spacing: 0.5px;
 }
 
+.info {
+  color: var(--accent);
+  font-family: var(--mono);
+  font-size: 24px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.result-caution {
+  margin-top: 16px;
+  font-size: 13px;
+  color: var(--text-muted);
+  text-align: left;
+}
+
 .danger-modal-title {
   color: var(--malicious);
 }

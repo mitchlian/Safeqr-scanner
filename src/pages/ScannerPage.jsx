@@ -4,6 +4,8 @@ import LoadingScreen from "../components/LoadingScreen";
 import ResultScreen from "../components/ResultScreen";
 import KnownMaliciousSites from "../components/KnownMaliciousSites";
 import Card from "../components/Card";
+import { supabase } from "../supabaseClient";
+import { classifyQrContent } from "../utils/classifyQrContent";
 const functionUrl='https://zbfbpswmaylqjapqwbel.supabase.co/functions/v1/check-url';
 
 function ScannerPage() {
@@ -14,6 +16,34 @@ function ScannerPage() {
 
   // Called after QR code detected
   const handleScan = async (decodedText) => {
+
+    const classification = classifyQrContent(decodedText);
+
+    // Only website URLs can be checked against Safe Browsing / VirusTotal.
+    // Everything else (payment QR, app links, wifi, contact, plain text)
+    // gets its own result view instead of being force-fit through that check.
+    if (classification.type !== "website") {
+
+      setScreen("loading");
+
+      const { data: blacklistHit } = await supabase
+        .from("blacklist")
+        .select("reason")
+        .eq("url", classification.raw)
+        .maybeSingle();
+
+      setScanResult({
+        url: decodedText,
+        kind: classification.type,
+        scheme: classification.scheme,
+        payment: classification.payment,
+        blacklisted: !!blacklistHit,
+        blacklistReason: blacklistHit?.reason ?? null,
+      });
+
+      setScreen("result");
+      return;
+    }
 
     setScreen("loading");
 
@@ -32,6 +62,7 @@ function ScannerPage() {
 
       setScanResult({
         url: decodedText,
+        kind: "website",
         safe: isSafe,
         dangerReasons,
         reasons: [
@@ -48,6 +79,7 @@ function ScannerPage() {
 
       setScanResult({
         url: decodedText,
+        kind: "website",
         safe: false,
         error: true,
       });
