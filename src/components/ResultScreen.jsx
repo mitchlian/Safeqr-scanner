@@ -17,16 +17,18 @@ const QR_KIND_LABELS = {
   text: "Text Content",
 };
 
-function ReportAndScanAgainButtons({ url, onScanAgain }) {
+function ReportAndScanAgainButtons({ url, onScanAgain, canReport = true}) {
 
   const [showReportModal, setShowReportModal] = useState(false);
 
   return (
     <div className="buttons">
 
-      <button onClick={() => setShowReportModal(true)}>
-        Report This
-      </button>
+      {canReport && (
+        <button onClick={() => setShowReportModal(true)}>
+          Report This
+        </button>
+      )}
 
       <button onClick={onScanAgain}>
         Scan Another QR
@@ -126,6 +128,7 @@ function PaymentResult({ result, onScanAgain }) {
       <ReportAndScanAgainButtons
         url={result.url}
         onScanAgain={onScanAgain}
+        canReport={false}
       />
     </>
   );
@@ -181,6 +184,7 @@ function AppLinkResult({ result, onScanAgain }) {
       <ReportAndScanAgainButtons
         url={result.url}
         onScanAgain={onScanAgain}
+        canReport={false}
       />
     </>
   );
@@ -245,6 +249,7 @@ function ContactResult({ result, onScanAgain }) {
       <ReportAndScanAgainButtons
         url={result.url}
         onScanAgain={onScanAgain}
+        canReport={false}
       />
     </>
   );
@@ -302,6 +307,7 @@ function WifiResult({ result, onScanAgain }) {
       <ReportAndScanAgainButtons
         url={result.url}
         onScanAgain={onScanAgain}
+        canReport={false}
       />
     </>
   );
@@ -328,6 +334,7 @@ function GenericTextResult({ result, onScanAgain }) {
       <ReportAndScanAgainButtons
         url={result.url}
         onScanAgain={onScanAgain}
+        canReport={false}
       />
     </>
   );
