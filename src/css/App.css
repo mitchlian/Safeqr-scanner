@@ -220,6 +220,20 @@ video {
   font-size: 13px;
   word-break: break-word;
   color: var(--text);
+  justify-content: space-between;
+  align-items: center;
+  display: flex;
+  gap: 20px;
+}
+
+.site-row span:first-child {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.site-row span:last-child {
+  flex-shrink: 0;
+  text-align: right;
 }
 
 /* Report Modal */
@@ -250,6 +264,7 @@ video {
   text-align: left;
 }
 
+/* Scanned URL Details */
 .scanned-url {
   background: var(--bg-inset);
   border: 1px solid var(--border);
@@ -266,6 +281,40 @@ video {
   font-family: var(--mono);
   font-size: 13px;
   color: var(--text);
+}
+.scanned-details {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin: 18px 0;
+}
+
+.detail-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 20px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border);
+}
+
+.detail-row strong {
+  flex-shrink: 0;
+}
+
+.detail-row span {
+  text-align: right;
+  word-break: break-word;
+}
+
+.detail-column {
+  flex-direction: column;
+  gap: 6px;
+}
+
+.detail-column span {
+  text-align: left;
+  width: 100%;
 }
 
 /* Mobile */
