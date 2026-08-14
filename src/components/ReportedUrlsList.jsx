@@ -38,6 +38,17 @@ function ReportedUrlsList({ onViewDetails, refreshKey }) {
             reason: report.reason,
         }]);
 
+        await supabase.from("reports").update({ status: "accepted" }).eq("id", report.id);
+        
+        // Update local state immediately
+        setReports(prevReports =>
+            prevReports.map(r =>
+                r.id === report.id
+                    ? { ...r, status: "accepted" }
+                    : r
+            )
+        );
+
         setBlacklisting(null);
     };
 
@@ -76,18 +87,22 @@ function ReportedUrlsList({ onViewDetails, refreshKey }) {
                 {report.status.toUpperCase()}
             </span>
 
-            <button
-                onClick={() => handleQuickBlacklist(report)}
-                disabled={blacklisting === report.id}
-            >
-                Blacklist
-            </button>
+            {(report.status === "pending" || report.status === "declined") && (
+                <button
+                    onClick={() => handleQuickBlacklist(report)}
+                    disabled={blacklisting === report.id}
+                >
+                    {blacklisting === report.id ? "Blacklisting..." : "Blacklist"}
+                </button>
+            )}
 
-            <button
-              onClick={() => onViewDetails(report)}
-            >
-              View Details
-            </button>
+            {report.status === "pending" && (
+                <button
+                    onClick={() => onViewDetails(report)}
+                >
+                    View Details
+                </button>
+            )}
 
           </div>
 

@@ -42,9 +42,18 @@ function QRScanner({ onScanSuccess }) {
 
   const handleManualCheck = () => {
 
-    if (!inputUrl.trim()) return;
+    const value = inputUrl.trim();
 
-    onScanSuccess(inputUrl);
+    if (!value) return;
+
+    let url = value;
+
+    // Add https:// if the user didn't provide a scheme
+    if (!/^https?:\/\//i.test(url)) {
+      url = `https://${url}`;
+    }
+
+    onScanSuccess(url);
 
     setInputUrl("");
   };

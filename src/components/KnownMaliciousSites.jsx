@@ -13,15 +13,37 @@ function KnownMaliciousSites() {
 
       const { data, error } = await supabase
         .from("blacklist")
-        .select("id, url")
-        .order("created_at", { ascending: false });
+        .select("id, url");
 
       if (error) {
         setError(error.message);
-      } else {
-        setSites(data);
+        setLoading(false);
+        return;
       }
 
+      // Count how many times each URL appears
+      const urlCounts = {};
+
+      data.forEach(site => {
+        if (urlCounts[site.url]) {
+          urlCounts[site.url]++;
+        } else {
+          urlCounts[site.url] = 1;
+        }
+      });
+
+      // Convert object into an array
+      const groupedSites = Object.entries(urlCounts)
+        .map(([url, count]) => ({
+          url,
+          count
+        }))
+        // Most reported first
+        .sort((a, b) => b.count - a.count)
+        // Maximum of 10 links
+        .slice(0, 10);
+
+      setSites(groupedSites);
       setLoading(false);
     };
 
@@ -31,21 +53,27 @@ function KnownMaliciousSites() {
   return (
     <div className="malicious-sites">
 
-        <h1>Known Malicious Sites</h1>
+      <h1>Known Malicious Sites</h1>
 
-        {loading && <p>Loading...</p>}
+      {loading && <p>Loading...</p>}
 
-        {error && <p className="form-error">{error}</p>}
+      {error && <p className="form-error">{error}</p>}
 
-        {!loading && !error && sites.length === 0 && (
-          <p>No known malicious sites yet.</p>
-        )}
+      {!loading && !error && sites.length === 0 && (
+        <p>No known malicious sites yet.</p>
+      )}
 
-        {sites.map((site) => (
-        <div className="site-row" key={site.id}>
-            {site.url}
+      {sites.map((site) => (
+        <div className="site-row" key={site.url}>
+
+          <span>{site.url}</span>
+
+          <span>
+            {site.count} report{site.count === 1 ? "" : "s"}
+          </span>
+
         </div>
-        ))}
+      ))}
 
     </div>
   );
