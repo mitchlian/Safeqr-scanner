@@ -421,12 +421,23 @@ function WebsiteResult({ result, onScanAgain }) {
 
   return (
     <>
-      <div className={result.safe ? "safe" : "unsafe"}>
-        {result.safe
-          ? "✓ SAFE LINK"
-          : "✗ DANGEROUS LINK"}
-      </div>
+      <div className={
+          result.classification === "safe"
+            ? "safe"
+            : result.classification === "suspicious"
+              ? "suspicious"
+              : "unsafe"
+        }
+      >
+        {result.classification === "safe" && "✓ SAFE LINK"}
 
+        {result.classification === "suspicious" &&
+          "⚠ SUSPICIOUS LINK"}
+
+        {result.classification === "malicious" &&
+          "✗ DANGEROUS LINK"}
+      </div>
+      
       <div className="scanned-url">
         <strong>Scanned URL:</strong>
         <p>{result.url}</p>

@@ -64,11 +64,12 @@ function ScannerPage() {
         url: decodedText,
         kind: "website",
         safe: isSafe,
+        classification,
         dangerReasons,
         reasons: [
           { name: "Blacklist", passed: !checks.blacklist.malicious },
           { name: "Google Safe Browsing", passed: checks.googleSafeBrowsing.checked ? !checks.googleSafeBrowsing.malicious : null },
-          { name: "VirusTotal", passed: checks.virusTotal.checked ? !checks.virusTotal.malicious : null },
+          { name: "VirusTotal", passed: checks.virusTotal.checked ? !checks.virusTotal.malicious && !checks.virusTotal.suspicious : null },
         ],
       });
 

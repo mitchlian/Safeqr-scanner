@@ -191,8 +191,15 @@ async function checkVirusTotal(url: string, apiKey: string | undefined) {
 
     if (!stats) return { checked: false, malicious: false }
 
-    const malicious = (stats.malicious ?? 0) > 0 || (stats.suspicious ?? 0) > 0
-    return { checked: true, malicious, stats }
+    const malicious = (stats.malicious ?? 0) > 0;
+    const suspicious = (stats.suspicious ?? 0) > 0;
+
+    return {
+      checked: true,
+      malicious,
+      suspicious,
+      stats
+    }
   } catch (err) {
     console.error('VirusTotal check failed:', err)
     return { checked: false, malicious: false }
@@ -229,7 +236,22 @@ serve(async (req) => {
           checkVirusTotal(url, Deno.env.get('VIRUSTOTAL_API_KEY')),
         ])
 
-    const isMalicious = blacklistResult.malicious || googleResult.malicious || virustotalResult.malicious
+    const isMalicious =
+      blacklistResult.malicious ||
+      googleResult.malicious ||
+      virustotalResult.malicious;
+
+    const isSuspicious =
+      !isMalicious &&
+      virustotalResult.suspicious;
+
+    let classification = "safe";
+
+    if (isMalicious) {
+      classification = "malicious";
+    } else if (isSuspicious) {
+      classification = "suspicious";
+    }
 
     let threatScore = 0
     if (blacklistResult.malicious) threatScore = 100
@@ -275,7 +297,8 @@ serve(async (req) => {
     }
 
     return jsonResponse({
-      isSafe: !isMalicious,
+      isSafe: classification === "safe",
+      classification,
       threatScore,
       dangerReasons,
       checks: {
@@ -283,7 +306,7 @@ serve(async (req) => {
         virusTotal: virustotalResult,
         blacklist: blacklistResult,
       },
-    })
+    });
   } catch (err) {
     console.error('check-url failed:', err)
     return jsonResponse({ error: 'Internal error while checking URL.' }, 500)
