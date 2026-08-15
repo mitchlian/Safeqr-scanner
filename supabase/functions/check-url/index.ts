@@ -34,19 +34,62 @@ async function lookupCountry(req: Request) {
   }
 }
 
-async function checkBlacklist(supabase: ReturnType<typeof createClient>, url: string) {
-  const { data, error } = await supabase
-    .from('blacklist')
-    .select('id, reason')
-    .eq('url', url)
-    .maybeSingle()
+function getHostname(url: string) {
+  try {
+    const parsed = new URL(url.trim());
 
-  if (error) {
-    console.error('Blacklist lookup failed:', error.message)
-    return { checked: false, malicious: false }
+    let hostname = parsed.hostname.toLowerCase();
+
+    // Treat www.example.com as example.com
+    if (hostname.startsWith('www.')) {
+      hostname = hostname.substring(4);
+    }
+
+    return hostname;
+  } catch {
+    return null;
+  }
+}
+
+async function checkBlacklist(
+  supabase: ReturnType<typeof createClient>,
+  url: string
+) {
+  const hostname = getHostname(url);
+
+  if (!hostname) {
+    return {
+      checked: true,
+      malicious: false,
+      reason: null,
+    };
   }
 
-  return { checked: true, malicious: !!data, reason: data?.reason ?? null }
+  const { data, error } = await supabase
+    .from('blacklist')
+    .select('id, url, reason');
+
+  if (error) {
+    console.error('Blacklist lookup failed:', error.message);
+
+    return {
+      checked: false,
+      malicious: false,
+      reason: null,
+    };
+  }
+
+  const match = data.find((entry) => {
+    const blacklistedHostname = getHostname(entry.url);
+
+    return blacklistedHostname === hostname;
+  });
+
+  return {
+    checked: true,
+    malicious: !!match,
+    reason: match?.reason ?? null,
+  };
 }
 
 const THREAT_TYPE_LABELS: Record<string, string> = {
@@ -77,6 +120,16 @@ async function checkGoogleSafeBrowsing(url: string, apiKey: string | undefined) 
     )
 
     const result = await response.json()
+    //If google api cannot be used for whatever reason, we will not block the url, but we will log the error to the console for debugging purposes.
+    if (!response.ok) {
+      console.error("Google Safe Browsing API error:", result);
+
+      return {
+        checked: false,
+        malicious: false,
+        threatTypes: [] as string[],
+      };
+    }
     const threatTypes: string[] = [...new Set((result.matches ?? []).map((m: { threatType: string }) => m.threatType))]
     return { checked: true, malicious: !!result.matches, threatTypes }
   } catch (err) {
