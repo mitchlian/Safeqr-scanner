@@ -13,11 +13,69 @@ function ReportDetailsModal({ report, onClose, onResolved }) {
 
         setUpdating(true);
 
-        await supabase.from("reports").update({ status }).eq("id", report.id);
+        // Declining doesn't need to touch the blacklist
+        if (status === "declined") {
 
-        setUpdating(false);
-        onResolved?.();
-        onClose();
+            const { error } = await supabase
+                .from("reports")
+                .update({ status: "declined" })
+                .eq("id", report.id);
+
+            if (error) {
+                console.error("Failed to decline report:", error);
+                setUpdating(false);
+                return;
+            }
+
+            setUpdating(false);
+            onResolved?.();
+            onClose();
+
+            return;
+        }
+
+
+        // Accepting the report → add URL to blacklist
+        if (status === "accepted") {
+
+            const { error: blacklistError } = await supabase
+                .from("blacklist")
+                .insert([{
+                    url: report.url,
+                    reason: report.reason,
+                }]);
+
+            if (blacklistError) {
+                console.error(
+                    "Failed to add URL to blacklist:",
+                    blacklistError
+                );
+
+                setUpdating(false);
+                return;
+            }
+
+
+            // Only mark the report accepted if blacklist succeeded
+            const { error: reportError } = await supabase
+                .from("reports")
+                .update({ status: "accepted" })
+                .eq("id", report.id);
+
+            if (reportError) {
+                console.error(
+                    "Failed to accept report:",
+                    reportError
+                );
+
+                setUpdating(false);
+                return;
+            }
+
+            setUpdating(false);
+            onResolved?.();
+            onClose();
+        }
     };
 
     return (
