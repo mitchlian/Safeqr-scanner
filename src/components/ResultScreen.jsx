@@ -5,6 +5,9 @@ import ReportModal from "./ReportModal";
 const APP_SCHEME_LABELS = {
   intent: "Android app",
   whatsapp: "WhatsApp",
+  weixin: "WeChat",
+  wechat: "WeChat",
+  fb: "Facebook",
   tel: "Phone dialer",
   sms: "SMS",
   mailto: "Email client",
@@ -437,7 +440,7 @@ function WebsiteResult({ result, onScanAgain }) {
         {result.classification === "malicious" &&
           "✗ DANGEROUS LINK"}
       </div>
-      
+
       <div className="scanned-url">
         <strong>Scanned URL:</strong>
         <p>{result.url}</p>
