@@ -317,6 +317,26 @@ video {
   width: 100%;
 }
 
+/* Blacklist */
+.blacklist-row-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-shrink: 0;
+}
+
+.delete-rule-button {
+    padding: 6px 10px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.delete-rule-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
 /* Mobile */
 @media (max-width: 768px) {
   .app {

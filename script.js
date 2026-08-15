@@ -1,4 +1,4 @@
-// script.js file
+// temp file
 let htmlscanner;
 const functionUrl='https://zbfbpswmaylqjapqwbel.supabase.co/functions/v1/check-url';
 

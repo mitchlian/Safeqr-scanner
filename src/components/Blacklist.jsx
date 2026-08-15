@@ -13,6 +13,8 @@ function Blacklist({ refreshKey, onChanged }) {
     const [submitting, setSubmitting] = useState(false);
     const [formError, setFormError] = useState("");
 
+    const [deleting, setDeleting] = useState(null);
+
     const fetchBlacklist = async () => {
 
         const { data, error } = await supabase
@@ -30,7 +32,10 @@ function Blacklist({ refreshKey, onChanged }) {
     };
 
     useEffect(() => {
-        const load = async () => { await fetchBlacklist(); };
+        const load = async () => {
+            await fetchBlacklist();
+        };
+
         load();
     }, [refreshKey]);
 
@@ -44,10 +49,12 @@ function Blacklist({ refreshKey, onChanged }) {
         setFormError("");
         setSubmitting(true);
 
-        const { error } = await supabase.from("blacklist").insert([{
-            url: urlInput.trim(),
-            reason: reasonInput.trim() || null,
-        }]);
+        const { error } = await supabase
+            .from("blacklist")
+            .insert([{
+                url: urlInput.trim(),
+                reason: reasonInput.trim() || null,
+            }]);
 
         setSubmitting(false);
 
@@ -58,21 +65,69 @@ function Blacklist({ refreshKey, onChanged }) {
 
         setUrlInput("");
         setReasonInput("");
+
         fetchBlacklist();
         onChanged?.();
     };
 
+    const handleDelete = async (entry) => {
+
+        const confirmed = window.confirm(
+            `Delete this blacklist rule?\n\n${entry.url}\n\n` +
+            `This will remove the rule from SafeQR's blacklist. ` +
+            `The URL will no longer be flagged as manually blacklisted.`
+        );
+
+        if (!confirmed) return;
+
+        setDeleting(entry.id);
+        setFormError("");
+
+        const { error } = await supabase
+            .from("blacklist")
+            .delete()
+            .eq("id", entry.id);
+
+        if (error) {
+
+            setFormError(error.message);
+
+        } else {
+
+            // Remove it from the UI immediately
+            setBlacklist((current) =>
+                current.filter((item) => item.id !== entry.id)
+            );
+
+            onChanged?.();
+        }
+
+        setDeleting(null);
+    };
+
     const filtered = useMemo(() => {
+
         const term = search.trim().toLowerCase();
+
         if (!term) return blacklist;
-        return blacklist.filter((entry) => entry.url.toLowerCase().includes(term));
+
+        return blacklist.filter((entry) =>
+            entry.url.toLowerCase().includes(term)
+        );
+
     }, [blacklist, search]);
 
     return (
 
         <div>
 
-            <p className="admin-subtitle">{blacklist.length} rule{blacklist.length === 1 ? "" : "s"} active</p>
+            <p className="admin-subtitle">
+                {blacklist.length} rule
+                {blacklist.length === 1 ? "" : "s"} active
+            </p>
+
+
+            {/* ADD BLACKLIST RULE */}
 
             <div className="blacklist-add-form">
 
@@ -92,13 +147,24 @@ function Blacklist({ refreshKey, onChanged }) {
                     className="blacklist-reason-input"
                 />
 
-                <button onClick={handleAdd} disabled={submitting}>
+                <button
+                    onClick={handleAdd}
+                    disabled={submitting}
+                >
                     {submitting ? "Adding..." : "Add Rule"}
                 </button>
 
             </div>
 
-            {formError && <p className="form-error">{formError}</p>}
+
+            {formError && (
+                <p className="form-error">
+                    {formError}
+                </p>
+            )}
+
+
+            {/* SEARCH */}
 
             <input
                 type="text"
@@ -108,13 +174,24 @@ function Blacklist({ refreshKey, onChanged }) {
                 className="admin-search blacklist-search"
             />
 
+
             {loading && <p>Loading...</p>}
 
-            {error && <p className="form-error">{error}</p>}
+            {error && (
+                <p className="form-error">
+                    {error}
+                </p>
+            )}
+
 
             {!loading && !error && filtered.length === 0 && (
-                <p className="chart-empty">No blacklisted URLs yet.</p>
+                <p className="chart-empty">
+                    No blacklisted URLs yet.
+                </p>
             )}
+
+
+            {/* BLACKLIST RULES */}
 
             {filtered.map((entry) => (
 
@@ -122,12 +199,37 @@ function Blacklist({ refreshKey, onChanged }) {
                     className="admin-row"
                     key={entry.id}
                 >
+
                     <div>
                         <strong>{entry.url}</strong>
-                        {entry.reason && <p className="blacklist-reason">{entry.reason}</p>}
+
+                        {entry.reason && (
+                            <p className="blacklist-reason">
+                                {entry.reason}
+                            </p>
+                        )}
                     </div>
 
-                    <span className="scan-logs-time">{new Date(entry.created_at).toLocaleDateString()}</span>
+
+                    <div className="blacklist-row-actions">
+
+                        <span className="scan-logs-time">
+                            {new Date(entry.created_at)
+                                .toLocaleDateString()}
+                        </span>
+
+                        <button
+                            className="delete-rule-button"
+                            onClick={() => handleDelete(entry)}
+                            disabled={deleting === entry.id}
+                        >
+                            {deleting === entry.id
+                                ? "Deleting..."
+                                : "Delete Rule"}
+                        </button>
+
+                    </div>
+
                 </div>
 
             ))}
